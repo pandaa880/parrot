@@ -76,18 +76,31 @@ final class HotkeyMonitor {
         onEvent = nil
     }
 
+    // fileprivate func handle(type: CGEventType, event: CGEvent) {
+    //     if debug {
+    //         let flags = event.flags
+    //         let keycode = event.getIntegerValueField(.keyboardEventKeycode)
+    //         FileHandle.standardError.write(
+    //             Data(
+    //                 "  [debug] type=\(type.rawValue) keycode=\(keycode) flags=\(String(flags.rawValue, radix: 16))\n"
+    //                     .utf8
+    //             ))
+    //     }
+    //     guard type == .flagsChanged else { return }
+    //     let pressed = event.flags.contains(mask)
+    //     guard pressed != isPressed else { return }
+    //     isPressed = pressed
+    //     onEvent?(pressed ? .pressed : .released)
+    // }
+
     fileprivate func handle(type: CGEventType, event: CGEvent) {
-        if debug {
-            let flags = event.flags
-            let keycode = event.getIntegerValueField(.keyboardEventKeycode)
-            FileHandle.standardError.write(
-                Data(
-                    "  [debug] type=\(type.rawValue) keycode=\(keycode) flags=\(String(flags.rawValue, radix: 16))\n"
-                        .utf8
-                ))
-        }
         guard type == .flagsChanged else { return }
-        let pressed = event.flags.contains(mask)
+        
+        let keycode = event.getIntegerValueField(.keyboardEventKeycode)
+        // Keycode 61 is Right Option (Left Option is 58)
+        guard keycode == 61 else { return }
+        
+        let pressed = event.flags.contains(.maskAlternate)
         guard pressed != isPressed else { return }
         isPressed = pressed
         onEvent?(pressed ? .pressed : .released)

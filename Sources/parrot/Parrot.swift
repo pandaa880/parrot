@@ -169,7 +169,7 @@ struct Run: ParsableCommand {
         sigint.resume()
         signal(SIGINT, SIG_IGN)
 
-        FileHandle.standardError.write(Data("listening on fn hold · model: \(chosenModel.id) · ^C to quit\n".utf8))
+        FileHandle.standardError.write(Data("listening on right option hold · model: \(chosenModel.id) · ^C to quit\n".utf8))
         app.run()
     }
 }
